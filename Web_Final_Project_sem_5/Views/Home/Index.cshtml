@@ -1,0 +1,368 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth; scroll-snap-type: y proximity;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropCare - Home</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        .nav-hover {
+            transition: color 0.3s ease;
+        }
+
+            .nav-hover:hover {
+                color: #198754 !important;
+            }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <section id="home"
+             class="min-vh-100 d-flex flex-column justify-content-center align-items-center position-relative overflow-hidden"
+             style="scroll-snap-align: start;">
+
+        <div class="position-absolute top-0 start-0 w-100 h-100"
+             style="background-image: url('/images/header_bg.jpeg'); background-size: cover; background-position: center; filter: blur(3px); transform: scale(1.05); z-index: 0;">
+        </div>
+
+        <div class="position-absolute top-0 start-0 w-100 h-100"
+             style="background-color: rgba(0, 0, 0, 0.10); z-index: 1;">
+        </div>
+
+        <nav class="navbar navbar-expand-lg position-absolute top-0 start-50 translate-middle-x mt-4 w-75 shadow rounded-pill px-4"
+             style="background-color: rgba(255,255,255,0.5); backdrop-filter: blur(12px); z-index: 3;">
+
+            <div class="container-fluid">
+
+                <a class="navbar-brand fw-bold fs-3 text-black" href="#home"
+                   style="font-family: 'Great Vibes', cursive;">
+                    <i class="bi bi-flower1"></i> CropCare
+                </a>
+
+                <button class="navbar-toggler border-white" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+
+                        <li class="nav-item">
+                            <a class="nav-link text-black fw-semibold nav-hover" href="#home">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-black fw-semibold nav-hover" href="#features">Features</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-black fw-semibold nav-hover" href="#about">About</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/Account/SignUp" class="btn btn-success rounded-pill px-4">
+                                Sign Up
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/Account/Login" class="btn btn-success rounded-pill px-4">
+                                Login
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container position-relative text-center text-white"
+             style="z-index: 2;">
+
+            <h1 class="display-1 fw-bold mb-3"
+                style="font-family: 'Great Vibes', cursive;">
+
+                Take Care of <br>
+                Your Crops
+
+            </h1>
+
+            <p class="fs-4 fw-medium mb-4">
+                Healthy crops. A greener tomorrow.
+            </p>
+
+            <a href="#features" class="btn btn-success btn-lg rounded-pill px-5 py-3">
+                Get Started
+                <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section id="features" class="container-fluid p-0">
+
+        <div class="text-center py-5">
+
+            <h2 class="display-5 fw-bold text-black">
+                What CropCare Offers
+            </h2>
+
+            <p class="text-muted fs-5">
+                Everything you need to manage your farming operations.
+            </p>
+
+        </div>
+
+
+        <div class="row g-0 align-items-stretch min-vh-100"
+             style="scroll-snap-align: start;">
+
+            <div class="col-md-6 overflow-hidden">
+
+                <img src="/images/farm_management.jpg"
+                     class="w-100 h-100 object-fit-cover"
+                     alt="Farm Management">
+
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center bg-white   p-5" >
+
+                <div class="px-lg-5">
+
+                    <span class="text-success fw-semibold">
+                        01 — FARM MANAGEMENT
+                    </span>
+
+                    <h2 class="display-5 fw-bold text-success mt-3">
+                        Manage Your Farms
+                    </h2>
+
+                    <p class="fs-5 text-secondary mt-4">
+                        Keep all your farm information organized in one place.
+                        Manage multiple farms, maintain farm details and
+                        monitor your farming operations with ease.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-0 align-items-stretch min-vh-100"
+             style="scroll-snap-align: start;">
+
+            <div class="col-md-6 d-flex align-items-center bg-white bg-opacity-10 p-5">
+
+                <div class="px-lg-5">
+
+                    <span class="text-success fw-semibold">
+                        02 — CROP MANAGEMENT
+                    </span>
+
+                    <h2 class="display-5 fw-bold text-success mt-3">
+                        Take Care of Your Crops
+                    </h2>
+
+                    <p class="fs-5 text-secondary mt-4">
+                        Monitor your crops, record planting details and
+                        keep track of their growth stages. Stay updated
+                        with your crop activities throughout the season.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 overflow-hidden">
+
+                <img src="/images/crop_management.jpg"
+                     class="w-100 h-100 object-fit-cover"
+                     alt="Crop Management">
+
+            </div>
+
+        </div>
+
+
+        <div class="row g-0 align-items-stretch min-vh-100 mb-5"
+             style="scroll-snap-align: start;">
+
+            <div class="col-md-6 overflow-hidden">
+
+                <img src="/images/reports.jpg"
+                     class="w-100 h-100 object-fit-cover"
+                     alt="Reports and Expenses">
+
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center bg-white bg-opacity-10 p-5">
+
+                <div class="px-lg-5">
+
+                    <span class="text-success fw-semibold">
+                        03 — REPORTS & EXPENSES
+                    </span>
+
+                    <h2 class="display-5 fw-bold text-success mt-3">
+                        Track Your Progress
+                    </h2>
+
+                    <p class="fs-5 text-secondary mt-4">
+                        Record farming expenses, manage harvest information
+                        and view detailed reports. Understand your farm's
+                        performance and make better farming decisions.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section id="about"
+             class="container-fluid my-5 py-4 text-center text-white position-relative overflow-hidden rounded-3"
+             style="background-image: url('/images/cta.jpg'); background-size: cover; background-position: center; scroll-snap-align: start;">
+
+        <div class="position-absolute top-0 start-0 w-100 h-100"
+             style="background: rgba(10, 45, 25, 0.70);">
+        </div>
+
+        <div class="container position-relative py-3">
+
+            <h2 class="display-5 fw-bold mb-2">
+                Your Farm, Your Future.
+            </h2>
+
+            <p class="mb-3 fs-6">
+                Manage your farms, track crops and make smarter farming decisions with CropCare.
+            </p>
+
+            <a href="/Account/SignUp"
+               class="btn btn-light rounded-pill px-4 py-2 text-success fw-bold">
+                Get Started
+                <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <footer id="contact" class="bg-black text-white pt-5 pb-3">
+
+        <div class="container">
+
+            <div class="row text-center text-md-start">
+
+                <div class="col-md-4 mb-4">
+
+                    <h3 class="fw-bold text-success" style="font-family: 'Great Vibes', cursive;">
+                        <i class="bi bi-flower1"></i> CropCare
+                    </h3>
+
+                    <p class="text-white-50">
+                        Making farming easier, smarter and more organized.
+                    </p>
+
+                </div>
+
+
+                <div class="col-md-4 mb-4">
+
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+
+                    <ul class="list-unstyled">
+
+                        <li class="mb-2">
+                            <a href="#home" class="text-white-50 text-decoration-none">Home</a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="#features" class="text-white-50 text-decoration-none">Features</a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="#about" class="text-white-50 text-decoration-none">About</a>
+                        </li>
+
+                        <li class="mb-2">
+                            <a href="#contact" class="text-white-50 text-decoration-none">Contact</a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="col-md-4 mb-4">
+
+                    <h5 class="fw-bold mb-3">Follow Us</h5>
+
+                    <div class="d-flex justify-content-center justify-content-md-start gap-3">
+
+                        <a href="#" class="btn btn-outline-light rounded-circle">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+
+                        <a href="#" class="btn btn-outline-light rounded-circle">
+                            <i class="bi bi-twitter-x"></i>
+                        </a>
+
+                        <a href="#" class="btn btn-outline-light rounded-circle">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+
+                        <a href="#" class="btn btn-outline-light rounded-circle">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr class="border-secondary">
+
+            <div class="text-center text-white-50">
+
+                <p class="mb-0">
+                    © 2026 CropCare. All Rights Reserved.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
