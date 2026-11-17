@@ -2,7 +2,15 @@
     ViewData["Title"] = "Home Page";
     Layout = null;
 }
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
 
+        <button type="button" class="btn-close"
+                data-bs-dismiss="alert"></button>
+    </div>
+}
 <!DOCTYPE html>
 <html lang="en" style="scroll-behavior: smooth; scroll-snap-type: y proximity;">
 <head>
@@ -76,18 +84,55 @@
                             <a class="nav-link text-black fw-semibold nav-hover" href="#about">About</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="/Account/SignUp" class="btn btn-success rounded-pill px-4">
-                                Sign Up
-                            </a>
-                        </li>
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-black fw-semibold">
+                                    <i class="bi bi-person-circle"></i>
+                                    @User.Identity.Name
 
-                        <li class="nav-item">
-                            <a href="/Account/Login" class="btn btn-success rounded-pill px-4">
-                                Login
-                            </a>
-                        </li>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <span class="badge bg-primary">Admin</span>
+                                    }
+                                    else if (User.IsInRole("Farmer"))
+                                    {
+                                        <span class="badge bg-success">Farmer</span>
+                                    }
+                                </span>
+                            </li>
 
+                            <li class="nav-item">
+                                <form asp-controller="Account"
+                                      asp-action="Logout"
+                                      method="post">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-outline-danger rounded-pill px-4">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/Account/SignUp"
+                                   class="btn btn-success rounded-pill px-4">
+                                    Sign Up
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/Account/Login"
+                                   class="btn btn-success rounded-pill px-4">
+                                    Login
+                                </a>
+                            </li>
+                        }
                     </ul>
 
                 </div>

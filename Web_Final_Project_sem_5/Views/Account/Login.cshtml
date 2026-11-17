@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Web_Final_Project_sem_5.Models.ViewModels.LoginViewModel
+
+@{
     ViewData["Title"] = "Login - CropCare";
     Layout = null;
 }
@@ -57,8 +59,17 @@
 
                     </div>
 
-                    <form method="post" action="/Account/Login">
+                    <form id="loginForm"
+                          asp-controller="Account"
+                          asp-action="Login"
+                          method="post">
 
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="All"
+                             class="text-danger small mb-2">
+                        </div>
+                        <div id="loginMessage" class="text-danger small mb-2"></div>
                         <div class="mb-3">
 
                             <div class="d-flex align-items-center justify-content-between">
@@ -69,12 +80,17 @@
 
                                 <div class="d-flex gap-2 mb-2">
 
-                                    <input type="radio"
+                                    @* <input asp-for="Role" *@
+                                    @*        type="radio" *@
+                                    @*        class="btn-check" *@
+                                    @*        id="farmer" *@
+                                    @*        value="Farmer"> *@
+                                    <input asp-for="Role"
+                                           type="radio"
                                            class="btn-check"
-                                           name="Role"
                                            id="farmer"
                                            value="Farmer"
-                                           checked>
+                                           checked="@(Model.Role == "Farmer")">
 
                                     <label class="btn btn-sm btn-outline-success px-3"
                                            for="farmer">
@@ -82,9 +98,9 @@
                                         Farmer
                                     </label>
 
-                                    <input type="radio"
+                                    <input asp-for="Role"
+                                           type="radio"
                                            class="btn-check"
-                                           name="Role"
                                            id="admin"
                                            value="Admin">
 
@@ -102,7 +118,8 @@
 
                         <div class="mb-3">
 
-                            <label for="email" class="form-label small fw-semibold">
+                            <label asp-for="Email"
+                                   class="form-label small fw-semibold">
                                 Email Address
                             </label>
 
@@ -112,20 +129,23 @@
                                     <i class="bi bi-envelope text-success"></i>
                                 </span>
 
-                                <input type="email"
+                                <input asp-for="Email"
+                                       type="email"
                                        class="form-control"
-                                       id="email"
-                                       name="Email"
-                                       placeholder="Enter your email"
-                                       required>
+                                       placeholder="Enter your email">
 
                             </div>
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger small">
+                            </span>
 
                         </div>
 
                         <div class="mb-3">
 
-                            <label for="password" class="form-label small fw-semibold">
+                            <label asp-for="Password"
+                                   class="form-label small fw-semibold">
                                 Password
                             </label>
 
@@ -135,14 +155,16 @@
                                     <i class="bi bi-lock text-success"></i>
                                 </span>
 
-                                <input type="password"
+                                <input asp-for="Password"
+                                       type="password"
                                        class="form-control"
-                                       id="password"
-                                       name="Password"
-                                       placeholder="Enter your password"
-                                       required>
+                                       placeholder="Enter your password">
 
                             </div>
+
+                            <span asp-validation-for="Password"
+                                  class="text-danger small">
+                            </span>
 
                         </div>
 
@@ -150,13 +172,11 @@
 
                             <div class="form-check">
 
-                                <input class="form-check-input"
-                                       type="checkbox"
-                                       id="rememberMe"
-                                       name="RememberMe">
+                                <input asp-for="RememberMe"
+                                       class="form-check-input">
 
-                                <label class="form-check-label small text-secondary"
-                                       for="rememberMe">
+                                <label asp-for="RememberMe"
+                                       class="form-check-label small text-secondary">
                                     Remember me
                                 </label>
 
@@ -203,6 +223,53 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            console.log("1. jQuery loaded");
+
+            $("#loginForm").on("submit", function (e) {
+
+                console.log("2. Form submitted");
+
+                e.preventDefault();
+
+                $("#loginMessage").text("Checking login...");
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: "POST",
+                    data: $(this).serialize(),
+
+                    success: function (response) {
+
+                        console.log("3. Server response:", response);
+
+                        if (response.success) {
+                            window.location.href = response.redirectUrl;
+                        }
+                        else {
+                            $("#loginMessage").text(response.message);
+                        }
+                    },
+
+                    error: function (xhr) {
+
+                        console.log("AJAX ERROR:", xhr.status);
+                        console.log(xhr.responseText);
+
+                        $("#loginMessage").text(
+                            "Server error: " + xhr.status
+                        );
+                    }
+                });
+
+            });
+
+        });
+    </script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
