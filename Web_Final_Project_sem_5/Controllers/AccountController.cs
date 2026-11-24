@@ -75,13 +75,23 @@ namespace Web_Final_Project_sem_5.Controllers
 
             if (result.Succeeded)
             {
+                string redirectUrl;
+
+                if (model.Role == "Admin")
+                {
+                    redirectUrl = Url.Action("Dashboard", "Admin");
+                }
+                else
+                {
+                    redirectUrl = Url.Action("Dashboard", "Farmer");
+                }
+
                 return Json(new
                 {
                     success = true,
-                    redirectUrl = Url.Action("Index", "Home")
+                    redirectUrl = redirectUrl
                 });
             }
-
             return Json(new
             {
                 success = false,

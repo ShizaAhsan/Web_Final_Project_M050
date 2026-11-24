@@ -1,0 +1,259 @@
+﻿@model IEnumerable<Web_Final_Project_sem_5.Models.Farm>
+
+@{
+    ViewData["Title"] = "My Farms";
+    Layout = "~/Views/Shared/_FarmerLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold">My Farms</h3>
+            <p class="text-muted mb-0">
+                Manage all your registered farms.
+            </p>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Add New Farm</h5>
+        </div>
+
+        <div class="card-body">
+            <form asp-controller="Farmer"
+                  asp-action="AddFarm"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Farm Name</label>
+                        <input name="FarmName"
+                               class="form-control"
+                               placeholder="Enter farm name"
+                               required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Location</label>
+                        <input name="Location"
+                               class="form-control"
+                               placeholder="Enter farm location"
+                               required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Land Area</label>
+                        <input name="LandArea"
+                               type="number"
+                               step="0.01"
+                               min="0.01"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Area Unit</label>
+                        <select name="AreaUnit" class="form-select" required>
+                            <option value="Acres">Acres</option>
+                            <option value="Kanals">Kanals</option>
+                            <option value="Marla">Marla</option>
+                            <option value="Hectares">Hectares</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Description</label>
+                        <input name="Description"
+                               class="form-control"
+                               placeholder="Optional description" />
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-plus-circle me-1"></i>
+                            Add Farm
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Registered Farms</h5>
+        </div>
+
+        <div class="card-body">
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-tree display-4 text-success"></i>
+                    <h5 class="mt-3">No Farms Added Yet</h5>
+                    <p class="text-muted">
+                        Add your first farm using the form above.
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Farm Name</th>
+                                <th>Location</th>
+                                <th>Land Area</th>
+                                <th>Added On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var farm in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">
+                                        @farm.FarmName
+                                    </td>
+
+                                    <td>@farm.Location</td>
+
+                                    <td>
+                                        @farm.LandArea @farm.AreaUnit
+                                    </td>
+
+                                    <td>
+                                        @farm.CreatedAt.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        <details>
+                                            <summary class="btn btn-sm btn-outline-success">
+                                                Edit
+                                            </summary>
+
+                                            <form asp-action="EditFarm"
+                                                  method="post"
+                                                  class="border rounded p-3 mt-2 bg-light">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="FarmId"
+                                                       value="@farm.FarmId" />
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">Farm Name</label>
+                                                    <input name="FarmName"
+                                                           value="@farm.FarmName"
+                                                           class="form-control"
+                                                           required />
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">Location</label>
+                                                    <input name="Location"
+                                                           value="@farm.Location"
+                                                           class="form-control"
+                                                           required />
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">Land Area</label>
+                                                    <input name="LandArea"
+                                                           type="number"
+                                                           step="0.01"
+                                                           min="0.01"
+                                                           value="@farm.LandArea"
+                                                           class="form-control"
+                                                           required />
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">Unit</label>
+                                                    <select name="AreaUnit"
+                                                            class="form-select">
+                                                        <option value="Acres"
+                                                                selected="@(farm.AreaUnit == "Acres")">
+                                                            Acres
+                                                        </option>
+                                                        <option value="Kanals"
+                                                                selected="@(farm.AreaUnit == "Kanals")">
+                                                            Kanals
+                                                        </option>
+                                                        <option value="Marla"
+                                                                selected="@(farm.AreaUnit == "Marla")">
+                                                            Marla
+                                                        </option>
+                                                        <option value="Hectares"
+                                                                selected="@(farm.AreaUnit == "Hectares")">
+                                                            Hectares
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">Description</label>
+                                                    <textarea name="Description"
+                                                              class="form-control">@farm.Description</textarea>
+                                                </div>
+
+                                                <button type="submit"
+                                                        class="btn btn-success btn-sm">
+                                                    Save Changes
+                                                </button>
+                                            </form>
+                                        </details>
+
+                                        <form asp-action="DeleteFarm"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirm('Remove this farm?');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@farm.FarmId" />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger mt-2">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

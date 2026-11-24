@@ -1,21 +1,34 @@
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Web_Final_Project_sem_5.Models;
+using Web_Final_Project_sem_5.Interfaces;
+using Web_Final_Project_sem_5.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Dapper Repository Dependency Injection
+builder.Services.AddScoped<IFarmRepository, FarmRepository>();
+builder.Services.AddScoped<ICropRepository, CropRepository>();
+
+// Database Connection (EF Core - Identity)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// ASP.NET Core Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
 var app = builder.Build();
+
+// Seed Admin and Roles
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider
@@ -67,20 +80,21 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
+// Configure HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(

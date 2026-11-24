@@ -1,0 +1,372 @@
+﻿@model IEnumerable<Web_Final_Project_sem_5.Models.Crop>
+
+@using Web_Final_Project_sem_5.Models
+
+@{
+    ViewData["Title"] = "My Crops";
+    Layout = "~/Views/Shared/_FarmerLayout.cshtml";
+
+    var farms = ViewBag.Farms as IEnumerable<Farm>
+                ?? Enumerable.Empty<Farm>();
+
+    var cropTypes = ViewBag.CropTypes as IEnumerable<CropType>
+                    ?? Enumerable.Empty<CropType>();
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h3 class="fw-bold">My Crops</h3>
+        <p class="text-muted">
+            Add and manage crops on your farms.
+        </p>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (!farms.Any())
+    {
+        <div class="alert alert-warning">
+            Please add a farm first before adding crops.
+            <a asp-action="MyFarms" class="alert-link">
+                Go to My Farms
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="card border-0 shadow-sm mb-4">
+
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0">Add New Crop</h5>
+            </div>
+
+            <div class="card-body">
+
+                <form asp-action="AddCrop" method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Select Farm</label>
+
+                            <select name="FarmId"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">Choose Farm</option>
+
+                                @foreach (var farm in farms)
+                                {
+                                    <option value="@farm.FarmId">
+                                        @farm.FarmName
+                                    </option>
+                                }
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Crop Type</label>
+
+                            <select name="CropTypeId"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">Choose Crop</option>
+
+                                @foreach (var type in cropTypes)
+                                {
+                                    <option value="@type.CropTypeId">
+                                        @type.CropName
+                                    </option>
+                                }
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Sowing Date</label>
+
+                            <input type="date"
+                                   name="SowingDate"
+                                   class="form-control"
+                                   required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                Expected Harvest Date
+                            </label>
+
+                            <input type="date"
+                                   name="ExpectedHarvestDate"
+                                   class="form-control"
+                                   required />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Notes</label>
+
+                            <textarea name="Notes"
+                                      class="form-control"
+                                      rows="2"
+                                      placeholder="Optional notes"></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-plus-circle me-1"></i>
+                                Add Crop
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">Crop Records</h5>
+        </div>
+
+        <div class="card-body">
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-flower2 display-4 text-success"></i>
+                    <h5 class="mt-3">No Crops Found</h5>
+                    <p class="text-muted">
+                        Your added crops will appear here.
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Crop</th>
+                                <th>Farm</th>
+                                <th>Sowing Date</th>
+                                <th>Expected Harvest</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var crop in Model)
+                            {
+                                <tr>
+
+                                    <td class="fw-semibold">
+                                        @crop.CropName
+                                    </td>
+
+                                    <td>@crop.FarmName</td>
+
+                                    <td>
+                                        @crop.SowingDate.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        @crop.ExpectedHarvestDate.ToString("dd MMM yyyy")
+                                    </td>
+
+                                    <td>
+                                        @if (crop.Status == "Harvested")
+                                        {
+                                            <span class="badge bg-success">
+                                                Harvested
+                                            </span>
+                                        }
+                                        else if (crop.Status == "Growing")
+                                        {
+                                            <span class="badge bg-primary">
+                                                Growing
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                Planned
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+
+                                        <details>
+                                            <summary class="btn btn-sm btn-outline-success">
+                                                Edit
+                                            </summary>
+
+                                            <form asp-action="EditCrop"
+                                                  method="post"
+                                                  class="border rounded p-3 mt-2 bg-light">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="CropId"
+                                                       value="@crop.CropId" />
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">
+                                                        Farm
+                                                    </label>
+
+                                                    <select name="FarmId"
+                                                            class="form-select"
+                                                            required>
+
+                                                        @foreach (var farm in farms)
+                                                        {
+                                                            <option value="@farm.FarmId"
+                                                                    selected="@(farm.FarmId == crop.FarmId)">
+                                                                @farm.FarmName
+                                                            </option>
+                                                        }
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">
+                                                        Crop Type
+                                                    </label>
+
+                                                    <select name="CropTypeId"
+                                                            class="form-select"
+                                                            required>
+
+                                                        @foreach (var type in cropTypes)
+                                                        {
+                                                            <option value="@type.CropTypeId"
+                                                                    selected="@(type.CropTypeId == crop.CropTypeId)">
+                                                                @type.CropName
+                                                            </option>
+                                                        }
+
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">
+                                                        Sowing Date
+                                                    </label>
+
+                                                    <input type="date"
+                                                           name="SowingDate"
+                                                           value="@crop.SowingDate.ToString("yyyy-MM-dd")"
+                                                           class="form-control"
+                                                           required />
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">
+                                                        Expected Harvest Date
+                                                    </label>
+
+                                                    <input type="date"
+                                                           name="ExpectedHarvestDate"
+                                                           value="@crop.ExpectedHarvestDate.ToString("yyyy-MM-dd")"
+                                                           class="form-control"
+                                                           required />
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label class="form-label">
+                                                        Notes
+                                                    </label>
+
+                                                    <textarea name="Notes"
+                                                              class="form-control">@crop.Notes</textarea>
+                                                </div>
+
+                                                <button type="submit"
+                                                        class="btn btn-success btn-sm">
+                                                    Save Changes
+                                                </button>
+
+                                            </form>
+                                        </details>
+
+                                        <form asp-action="UpdateCropStatus"
+                                              method="post"
+                                              class="mt-2">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@crop.CropId" />
+
+                                            <select name="status"
+                                                    class="form-select form-select-sm mb-1">
+
+                                                <option value="Planned"
+                                                        selected="@(crop.Status == "Planned")">
+                                                    Planned
+                                                </option>
+
+                                                <option value="Growing"
+                                                        selected="@(crop.Status == "Growing")">
+                                                    Growing
+                                                </option>
+
+                                                <option value="Harvested"
+                                                        selected="@(crop.Status == "Harvested")">
+                                                    Harvested
+                                                </option>
+
+                                            </select>
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                Update Status
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>
